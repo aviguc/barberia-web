@@ -4,6 +4,7 @@ import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from datetime import timedelta
+import time
 
 # --- MAQUILLAJE CSS (Ocultar marcas y mejorar estilo) ---
 hide_st_style = """
@@ -95,23 +96,48 @@ def crear_evento(service, nombre, telefono, fecha, hora_inicio):
     service.events().insert(calendarId=CALENDAR_ID, body=evento).execute()
 
 # --- APP ---
-st.set_page_config(page_title="Reserva Barbería", page_icon="✂️")
-st.title("✂️ Barbería León")
+# --- INTERFAZ MEJORADA ---
+# Puedes poner aquí una URL de un logo real si tienes, o dejar el título elegante
+st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✂️ BARBERSHOP DISTRITO 23</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Reserva tu corte en segundos</p>", unsafe_allow_html=True)
+st.divider() # Una línea separadora elegante
 
-fecha = st.date_input("Elige fecha:", datetime.date.today())
+# Usamos columnas para que no quede todo apelotonado
+col1, col2 = st.columns(2)
 
-service = get_calendar_service()
+with col1:
+    fecha = st.date_input("📅 ¿Qué día vienes?", datetime.date.today())
+
+huecos = []
 if service:
     huecos = obtener_huecos_libres(service, fecha)
+
+with col2:
     if huecos:
-        hora = st.selectbox("Horas libres:", huecos)
-        nombre = st.text_input("Nombre:")
-        telefono = st.text_input("Teléfono:")
-        if st.button("Reservar Cita"):
-            if nombre and telefono:
-                crear_evento(service, nombre, telefono, fecha, hora)
-                st.success(f"¡Listo! Reserva el {fecha} a las {hora}")
-            else:
-                st.warning("Faltan datos")
+        hora = st.selectbox("🕒 Horas disponibles:", huecos)
     else:
-        st.info("No hay huecos libres hoy.")
+        st.warning("Sin huecos hoy")
+        hora = None
+
+# Inputs de texto más limpios
+nombre = st.text_input("👤 Tu Nombre:")
+telefono = st.text_input("📱 Tu Teléfono:")
+
+st.divider()
+
+# Botón centrado y grande (truco usando columnas vacías a los lados)
+c1, c2, c3 = st.columns([1, 2, 1])
+with c2:
+    if st.button("CONFIRMAR RESERVA", use_container_width=True):
+        if nombre and telefono and hora:
+            try:
+                crear_evento(service, nombre, telefono, fecha, hora)
+                # Mensaje elegante en vez de globos
+                st.success(f"✅ ¡Hecho! Te esperamos el {fecha} a las {hora}.")
+                st.toast("Reserva guardada correctamente", icon="🔥")
+                time.sleep(2) # Espera un poco para que se lea
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error: {e}")
+        else:
+            st.warning("⚠️ Por favor, rellena nombre y teléfono.")
