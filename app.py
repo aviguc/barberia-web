@@ -21,7 +21,7 @@ def get_calendar_service():
         # INTENTO 1: ¿Estamos en la nube? Buscamos en la Caja Fuerte (Secrets)
         if "google_credentials" in st.secrets:
             # Leemos el secreto como texto y lo convertimos a diccionario
-            key_dict = json.loads(st.secrets["google_credentials"])
+            key_dict = json.loads(st.secrets["google_credentials"], strict=False)
             creds = service_account.Credentials.from_service_account_info(
                 key_dict, scopes=SCOPES)
         # INTENTO 2: ¿Estamos en el PC? Buscamos el archivo local
