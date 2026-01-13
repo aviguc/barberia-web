@@ -23,9 +23,9 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 CALENDAR_ID = '14a68675d767a61817dac3835586bebd09c04571b241ee18b3967ba48289d6c2@group.calendar.google.com'
 
 # Configuración del Negocio
-DURACION_CITA = 45
-HORA_APERTURA = 10
-HORA_CIERRE = 20
+DURACION_CITA = 30
+HORA_APERTURA = 9
+HORA_CIERRE = 21
 
 def get_calendar_service():
     """Conexión Híbrida: Funciona en PC y Nube"""
