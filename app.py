@@ -64,7 +64,10 @@ def obtener_huecos_libres(service, fecha_elegida):
         hora_actual += timedelta(minutes=DURACION_CITA)
 
     huecos_libres = []
+    ahora_madrid=datetime.datetime.utcnow() + timedelta(hours=1)
     for hueco in huecos_posibles:
+        if hueco<ahora_madrid:
+            continue
         ocupado = False
         for evento in eventos:
             start = evento['start'].get('dateTime', evento['start'].get('date'))
@@ -102,7 +105,7 @@ st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
-    fecha = st.date_input("📅 ¿Qué día vienes?", datetime.date.today())
+    fecha = st.date_input("📅 ¿Qué día vienes?", datetime.date.today(), min_value=date.today())
 
 huecos = []
 # Ahora 'service' ya existe, así que esto funcionará
