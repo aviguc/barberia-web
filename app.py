@@ -5,15 +5,25 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from datetime import timedelta
 
+# --- MAQUILLAJE CSS (Ocultar marcas y mejorar estilo) ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 # --- CONFIGURACIÓN ---
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 # ¡¡IMPORTANTE!! Pega aquí tu ID de calendario real
 CALENDAR_ID = '14a68675d767a61817dac3835586bebd09c04571b241ee18b3967ba48289d6c2@group.calendar.google.com'
 
 # Configuración del Negocio
-DURACION_CITA = 45
-HORA_APERTURA = 10
-HORA_CIERRE = 20
+DURACION_CITA = 30
+HORA_APERTURA = 9
+HORA_CIERRE = 21
 
 def get_calendar_service():
     """Conexión Híbrida: Funciona en PC (archivo) y en Nube (Secrets)"""
@@ -101,7 +111,6 @@ if service:
             if nombre and telefono:
                 crear_evento(service, nombre, telefono, fecha, hora)
                 st.success(f"¡Listo! Reserva el {fecha} a las {hora}")
-                st.balloons()
             else:
                 st.warning("Faltan datos")
     else:
