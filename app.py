@@ -98,7 +98,7 @@ def crear_evento(service, nombre, telefono, fecha, hora_inicio):
 # 1. ARRANCAMOS EL MOTOR (Esta es la línea que faltaba)
 service = get_calendar_service()
 
-st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✂️ BARBERHOP DISTRITO 23</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✂️ BARBERSHOP DISTRITO 23</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>Reserva tu corte en segundos</p>", unsafe_allow_html=True)
 st.divider()
 
